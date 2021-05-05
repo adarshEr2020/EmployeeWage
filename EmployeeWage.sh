@@ -26,18 +26,23 @@ function getWorkingHr()
 	 case $1 in
                     $isPresent) EmpHr=8
                                 ;;
-                $isPartPresent) EmpDayHr=4
+                $isPartPresent) EmpHr=4
                                 ;;
                              *) EmpHr=0
                                 ;;
         esac
 
 }
+function getEmpWage()
+{
+	echo $(($1 * $EmpWagePerHr))
+}
 while [[ $TotalEmpHr -lt $MaxHrInMonth && $TotalWorkingDays -lt $NumWorkingDays ]]
 do
 	((TotalWorkingDays++))
 	getWorkingHr $Attendance
 	TotalEmpHr=$(($TotalEmpHr+$EmpHr))
+	DailyWages[$TotalWorkingDays]=$(($EmpHr*$EmpWagePerHr))
 done
-TotalSalary=$(($TotalEmpHr*$EmpWagePerHr))
+TotalSalary=$(getEmpWage $TotalEmpHr)
 echo $TotalSalary
