@@ -3,28 +3,36 @@ echo "Welcome to Employee Wage Computation Program"
 isPresent=1
 isPartPresent=2
 EmpWagePerHr=20
-FullDayHr=8
-PartDayHr=4
 TotalSalary=0
 MonthlySalary=0
+MaxHrInMonth=100
+NumWorkingDays=20
+
+TotalEmpHr=0
+TotalWorkingDays=0
 Attendance=$((RANDOM%3))
 case $Attendance in
    	    $isPresent) echo "Employee is Present"
+			EmpHr=8
 			;;
 	$isPartPresent) echo "Employee is Parttime Present"
+			EmpHr=4
 			;;
 		     *) echo "Employee is Absent"
 			;;
 esac
-case $Attendance in
-	    $isPresent)	TotalSalary=$(($TotalSalary + ($EmpWagePerHr*$FullDayHr)))
-			MonthlySalary=$(($TotalSalary*20))
-		   	echo "Monthly salary : $MonthlySalary"
-			;;
-	$isPartPresent)
-			TotalSalary=$(($TotalSalary + ($EmpWagePerHr*$PartDayHr)))
-        		echo $TotalSalary
-			;;
-		     *)	echo $TotalSalary
-			;;
-esac
+while [[ $TotalEmpHr -lt $MaxHrInMonth && $TotalWorkingDays -lt $NumWorkingDays ]]
+do
+	((TotalWorkingDays++))
+	case $Attendance in
+		    $isPresent) EmpHr=8
+				;;
+		$isPartPresent) EmpDayHr=4
+				;;
+			     *)	EmpHr=0
+				;;
+	esac
+	TotalEmpHr=$(($TotalEmpHr+$EmpHr))
+done
+TotalSalary=$(($TotalEmpHr*$EmpWagePerHr))
+echo $TotalSalary
