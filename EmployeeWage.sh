@@ -21,17 +21,22 @@ case $Attendance in
 		     *) echo "Employee is Absent"
 			;;
 esac
+function getWorkingHr()
+{
+	 case $1 in
+                    $isPresent) EmpHr=8
+                                ;;
+                $isPartPresent) EmpDayHr=4
+                                ;;
+                             *) EmpHr=0
+                                ;;
+        esac
+
+}
 while [[ $TotalEmpHr -lt $MaxHrInMonth && $TotalWorkingDays -lt $NumWorkingDays ]]
 do
 	((TotalWorkingDays++))
-	case $Attendance in
-		    $isPresent) EmpHr=8
-				;;
-		$isPartPresent) EmpDayHr=4
-				;;
-			     *)	EmpHr=0
-				;;
-	esac
+	getWorkingHr $Attendance
 	TotalEmpHr=$(($TotalEmpHr+$EmpHr))
 done
 TotalSalary=$(($TotalEmpHr*$EmpWagePerHr))
